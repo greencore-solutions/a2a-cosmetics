@@ -417,10 +417,10 @@
  "region": "UK South",
  "registry": {
   "issuer": "https://a2a-registry.ai",
-  "client_id": null
+  "client_id": "a2ac_2b25ce0aabb9d8e24b160caa"
  },
  "hub": "https://a2a-cosmetics.ai",
- "asOf": "2026-09-20T20:19:33Z",
+ "asOf": "2026-09-20T21:04:43Z",
  "market": {
   "preset": "GB",
   "label": "UK",
@@ -428,7 +428,7 @@
   "ship_to": "UK",
   "member_as_parameter": false,
   "rule_set_version": "v1.0-2026-09-20",
-  "rules_in_force": 6,
+  "rules_in_force": 5,
   "regulator": {
    "name": "Office for Product Safety and Standards (UK)",
    "root": "https://www.gov.uk/government/organisations/office-for-product-safety-and-standards"
@@ -437,7 +437,7 @@
  "signatures": [
   {
    "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImEyYWMtMjAyNi0wOSJ9",
-   "signature": "PINsKh4cVe--mf4hVUZ5379H9T9qa1jZGH8blbrD_1yCZ0RdpnJVUysjQDV5uHd8nx7gvB0UjFGzRw70FOvQgg"
+   "signature": "2AQkgZ7cQDbCFfHucb3o6VUjgnVF0ylYLPb9UU-myUBJb6QbgoHtpo8sV4DQPYYqOQp3DibQJtfZdr8MIeHRyA"
   }
  ]
 }

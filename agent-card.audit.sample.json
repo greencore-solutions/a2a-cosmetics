@@ -197,10 +197,10 @@
  "region": "South Central US",
  "registry": {
   "issuer": "https://a2a-registry.ai",
-  "client_id": null
+  "client_id": "a2ac_99a91e91f734f677b851b049"
  },
  "hub": "https://a2a-cosmetics.ai",
- "asOf": "2026-09-20T20:19:33Z",
+ "asOf": "2026-09-20T21:04:43Z",
  "skillsOnly": [
   "list_agents",
   "get_pack_index",
@@ -213,7 +213,7 @@
  "signatures": [
   {
    "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImEyYWMtMjAyNi0wOSJ9",
-   "signature": "qGS8q_IO87tx7Apu9cUpcxoPPjBA7KLwEpafx9ryDkng-EGguwER2bQ-AbLzRXuNbwKTUHmUEbDnwHKkTRspaQ"
+   "signature": "HrtNw7SwSq2JYKx_jFn1e14h9QRYsRdvz8jSDkqW5kk0yaE_Ibsd2801jMIFewlXEZ9hdlP-7GSF4sPl-To8QQ"
   }
  ]
 }
