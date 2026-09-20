@@ -1,0 +1,443 @@
+{
+ "protocolVersion": "0.3.0",
+ "kind": "agent-card",
+ "name": "A2A Cosmetics — UK",
+ "description": "Agent-to-Agent (A2A) + Model Context Protocol (MCP) hub for cosmetics.",
+ "brief": "AI agents for brands, manufacturers, retailers and distributors. Business to business.",
+ "notice": "Artificial intelligence makes mistakes. A2A Cosmetics is an information source, not a recommendation. Rules differ by jurisdiction — refer to the regulator in your jurisdiction for the information that applies to you.",
+ "url": "https://uk.a2a-cosmetics.ai/a2a",
+ "preferredTransport": "JSONRPC",
+ "additionalInterfaces": [
+  {
+   "url": "https://mcp.a2a-cosmetics.ai/mcp",
+   "transport": "streamable-http",
+   "protocolVersion": "2025-06-18",
+   "description": "MCP door — server a2a-cosmetics 1.0.0, 20 tools"
+  }
+ ],
+ "supportedInterfaces": [
+  {
+   "url": "https://uk.a2a-cosmetics.ai/a2a",
+   "protocolBinding": "JSONRPC",
+   "transport": "JSONRPC",
+   "protocolVersion": "0.3.0",
+   "preferred": true,
+   "description": "A2A endpoint — message/send, tasks/get; DataPart {skill, params} runs the gate chain then the tool; text gets the skill list"
+  },
+  {
+   "url": "https://mcp.a2a-cosmetics.ai/mcp",
+   "protocolBinding": "HTTP+JSON",
+   "transport": "streamable-http",
+   "protocolVersion": "2025-06-18",
+   "description": "MCP door — server a2a-cosmetics 1.0.0, 20 tools"
+  }
+ ],
+ "version": "1.0.0",
+ "documentationUrl": "https://a2a-cosmetics.ai/docs",
+ "iconUrl": "https://a2a-cosmetics.ai/icon-512.png",
+ "provider": {
+  "organization": "GreenCore Solutions Corp.",
+  "url": "https://gsc-em.com"
+ },
+ "operator": {
+  "name": "GreenCore Solutions Corp.",
+  "url": "https://a2a-cosmetics.ai",
+  "contact": "mailto:mcp@a2a-cosmetics.ai",
+  "keyring": "https://a2a-cosmetics.ai/.well-known/jwks.json",
+  "kid": "a2ac-2026-09"
+ },
+ "capabilities": {
+  "streaming": false,
+  "pushNotifications": false,
+  "stateTransitionHistory": false
+ },
+ "securitySchemes": {
+  "credential": {
+   "type": "http",
+   "scheme": "bearer",
+   "description": "client-credentials Bearer from https://a2a-registry.ai (register at /oauth/register); reads need no authentication; none returns DENY_UNLICENSED_AGENT on the transacting skills"
+  }
+ },
+ "security": [],
+ "defaultInputModes": [
+  "application/json",
+  "text/plain"
+ ],
+ "defaultOutputModes": [
+  "application/json"
+ ],
+ "skills": [
+  {
+   "id": "cosmetics.resolve_jurisdiction",
+   "name": "resolve jurisdiction",
+   "description": "Where is this going? Resolve a ship-to (e.g. 'US', 'US-CA', 'UK', 'FR', 'EU-DE', 'JP') to one of the 18 markets and its rule set (13 rule sets; the six EU markets share one). UK is the label; machine fields carry the ISO code GB.",
+   "tags": [
+    "cosmetics",
+    "gate"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.resolve_actor",
+   "name": "resolve actor",
+   "description": "Who is asking? Brand, manufacturer, retailer or distributor (business to business); auditor (read-only); agent (inherits the class of the credential it presents — none returns DENY_UNLICENSED_AGENT). The consumer is never the counterparty. Returns communication_class: trade_information or public.",
+   "tags": [
+    "cosmetics",
+    "gate"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.gate_transaction",
+   "name": "gate transaction",
+   "description": "Allow or deny, with the reason and the rule. Takes a product (GTIN or catalogue id; optional), the ship-to market, the actor class and, when no record exists yet, the product type, ingredients (INCI) and claims. Returns one of twelve reason codes (ALLOW · REQUIRE_NOTIFICATION · REQUIRE_RESPONSIBLE_PERSON · DENY_NOT_A_COSMETIC_HERE · DENY_INGREDIENT_BANNED · DENY_INGREDIENT_LIMIT · DENY_CLAIM · DENY_MARKET · DENY_ACTOR_CLASS · DENY_UNLICENSED_AGENT · DENY_NO_GTIN · DENY_NOT_VERIFIED), the rule-set version, the source page and a decision_id for the downstream tools.",
+   "tags": [
+    "cosmetics",
+    "gate"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.get_ingredient_record",
+   "name": "get ingredient record",
+   "description": "One ingredient, and its status in every market: the standard ingredient name (INCI), aliases, and per rule set whether it is prohibited, restricted (with the limit or condition) or listed, each with the official list and its source page.",
+   "tags": [
+    "cosmetics",
+    "read"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.get_market_status",
+   "name": "get market status",
+   "description": "Is this product type a cosmetic here? Product type by market: cosmetic, drug, special class (functional cosmetic, quasi-drug, grade 2, therapeutic good) or not permitted — with the rule-set version and the regulator's page.",
+   "tags": [
+    "cosmetics",
+    "read"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.get_notification_requirements",
+   "name": "get notification requirements",
+   "description": "What must be filed before sale in a market: the notification scheme, the responsible-person requirement and, for a product type in a special class, the extra step (review, registration, listing) — each with its source page.",
+   "tags": [
+    "cosmetics",
+    "read"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.get_label_and_claims",
+   "name": "get label and claims",
+   "description": "What the label must say, and which claims are allowed: the label requirements of the market and the claims rules of record (patterns that take a product out of the cosmetic class), each with its source page. Optional claims are checked against the rules.",
+   "tags": [
+    "cosmetics",
+    "read"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.get_enforcement_watch",
+   "name": "get enforcement watch",
+   "description": "Recalls, bans and safety alerts, dated: enforcement events by market, ingredient, brand or since a date, each with its source page.",
+   "tags": [
+    "cosmetics",
+    "read"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.search_cleared_items",
+   "name": "search cleared items",
+   "description": "Find products cleared for this market: validated product records in a market (query by product name, brand, product type or lane; optional lane filter: suncare · fragrance · dermocosmetics · peptides · korean · sustainable). Only validated rows are served; each item carries its claim status and market status.",
+   "tags": [
+    "cosmetics",
+    "read"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.get_item",
+   "name": "get item",
+   "description": "One product by GTIN, fully resolved: taxonomy path, variant or form, brand, market, claim status, market status, availability; after the gate also ingredients, claims, attributes, shades (parent and child) and offers.",
+   "tags": [
+    "cosmetics",
+    "read"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.compare_items",
+   "name": "compare items",
+   "description": "Compare products, variants and shades side by side (two to eight GTINs or catalogue ids).",
+   "tags": [
+    "cosmetics",
+    "read"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.find_verified_supplier",
+   "name": "find verified supplier",
+   "description": "Verified makers and brands for this product or product type in a market: supplier records (brand · manufacturer) with their claim status — verified first, then claimed, then listed. Takes the decision_id of an allow decision.",
+   "tags": [
+    "cosmetics",
+    "transacting"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": [
+    {
+     "credential": []
+    }
+   ]
+  },
+  {
+   "id": "cosmetics.get_availability",
+   "name": "get availability",
+   "description": "In stock, and where: the availability block of a product (banners on the shelf of record, product URLs read live at load, store counts where the retailer record carries one) once gate_transaction has answered allow (decision_id).",
+   "tags": [
+    "cosmetics",
+    "transacting"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": [
+    {
+     "credential": []
+    }
+   ]
+  },
+  {
+   "id": "cosmetics.get_price",
+   "name": "get price",
+   "description": "The price for this buyer: the price basis (list · contract) from the supplier's offers on the record, once gate_transaction has answered allow (decision_id). Tiers buy services, never rank.",
+   "tags": [
+    "cosmetics",
+    "transacting"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": [
+    {
+     "credential": []
+    }
+   ]
+  },
+  {
+   "id": "cosmetics.get_product_documents",
+   "name": "get product documents",
+   "description": "Safety report, certificate of analysis, data sheet: the documents on a product record (product information file pointer, safety assessment, certificate of analysis, safety data sheet), each a URL with its read date; decision_id required.",
+   "tags": [
+    "cosmetics",
+    "transacting"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": [
+    {
+     "credential": []
+    }
+   ]
+  },
+  {
+   "id": "cosmetics.verify_gtin",
+   "name": "verify gtin",
+   "description": "Is this GTIN real, and whose is it? Check-digit validation, the GS1 prefix, and the validated record(s) that carry it on this hub with their brand and claim status.",
+   "tags": [
+    "cosmetics",
+    "read"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.create_order_intent",
+   "name": "create order intent",
+   "description": "Open an order between two agents: an order intent for a cleared product after the gate; the intent carries reason_code + rule_set_version and settles by x402 on a2a-x402.ai.",
+   "tags": [
+    "cosmetics",
+    "transacting"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": [
+    {
+     "credential": []
+    }
+   ]
+  },
+  {
+   "id": "cosmetics.a2a_handoff",
+   "name": "a2a handoff",
+   "description": "Hand the buyer to the right agent over Agent-to-Agent (A2A): with an allow decision the order intent goes to the counterparty's agent (envelope + card URL); with a deny, the market agent of the ship-to (the regulator's home page beside it) — a referral, never a sale to a consumer.",
+   "tags": [
+    "cosmetics",
+    "transacting"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": [
+    {
+     "credential": []
+    }
+   ]
+  },
+  {
+   "id": "cosmetics.get_safety_label",
+   "name": "get safety label",
+   "description": "Warnings and age limits: the warning statements the market requires for a product type (sunscreen, hair dye, aerosols, children's products) and the safety-alert scheme of the regulator, each with its source page.",
+   "tags": [
+    "cosmetics",
+    "read"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.log_audit",
+   "name": "log audit",
+   "description": "Write a line to the audit record for a gate decision, an order intent or a handoff (returns the line id).",
+   "tags": [
+    "cosmetics",
+    "read"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  }
+ ],
+ "role": "market",
+ "tenant": "hub",
+ "region": "UK South",
+ "registry": {
+  "issuer": "https://a2a-registry.ai",
+  "client_id": null
+ },
+ "hub": "https://a2a-cosmetics.ai",
+ "asOf": "2026-09-20T20:19:33Z",
+ "market": {
+  "preset": "GB",
+  "label": "UK",
+  "rule_set": "GB",
+  "ship_to": "UK",
+  "member_as_parameter": false,
+  "rule_set_version": "v1.0-2026-09-20",
+  "rules_in_force": 6,
+  "regulator": {
+   "name": "Office for Product Safety and Standards (UK)",
+   "root": "https://www.gov.uk/government/organisations/office-for-product-safety-and-standards"
+  }
+ },
+ "signatures": [
+  {
+   "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImEyYWMtMjAyNi0wOSJ9",
+   "signature": "PINsKh4cVe--mf4hVUZ5379H9T9qa1jZGH8blbrD_1yCZ0RdpnJVUysjQDV5uHd8nx7gvB0UjFGzRw70FOvQgg"
+  }
+ ]
+}

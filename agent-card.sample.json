@@ -1,0 +1,528 @@
+{
+  "protocolVersion": "0.3.0",
+  "kind": "agent-card",
+  "name": "A2A Cosmetics",
+  "description": "Agent-to-Agent (A2A) + Model Context Protocol (MCP) hub for cosmetics.",
+  "brief": "AI agents for brands, manufacturers, retailers and distributors. Business to business.",
+  "notice": "Artificial intelligence makes mistakes. A2A Cosmetics is an information source, not a recommendation. Rules differ by jurisdiction — refer to the regulator in your jurisdiction for the information that applies to you.",
+  "regulators": {
+    "FDA (United States)": "https://www.fda.gov/",
+    "COFEPRIS (Mexico)": "https://www.gob.mx/cofepris",
+    "Health Canada": "https://www.canada.ca/en/health-canada.html",
+    "ANVISA (Brazil)": "https://www.gov.br/anvisa/pt-br",
+    "Office for Product Safety and Standards (UK)": "https://www.gov.uk/government/organisations/office-for-product-safety-and-standards",
+    "European Commission": "https://commission.europa.eu/",
+    "Federal Food Safety and Veterinary Office (Switzerland)": "https://www.blv.admin.ch/",
+    "Ministry of Industry and Advanced Technology (UAE)": "https://moiat.gov.ae/",
+    "Central Drugs Standard Control Organisation (India)": "https://cdsco.gov.in/",
+    "Health Sciences Authority (Singapore)": "https://www.hsa.gov.sg/",
+    "Ministry of Health, Labour and Welfare (Japan)": "https://www.mhlw.go.jp/",
+    "Ministry of Food and Drug Safety (Korea)": "https://www.mfds.go.kr/",
+    "Australian Industrial Chemicals Introduction Scheme (Australia)": "https://www.industrialchemicals.gov.au/",
+    "Therapeutic Goods Administration (Australia, sunscreens)": "https://www.tga.gov.au/"
+  },
+  "url": "https://a2a-cosmetics.ai/a2a",
+  "version": "1.0.0",
+  "surface_version": "1.0.0",
+  "door_version": "1.0.0",
+  "tools": 20,
+  "documentationUrl": "https://a2a-cosmetics.ai/docs",
+  "iconUrl": "https://a2a-cosmetics.ai/icon-512.png",
+  "provider": {
+    "organization": "GreenCore Solutions Corp.",
+    "url": "https://gsc-em.com"
+  },
+  "operator": {
+    "name": "GreenCore Solutions Corp.",
+    "url": "https://a2a-cosmetics.ai",
+    "contact": "mailto:mcp@a2a-cosmetics.ai",
+    "keyring": "https://a2a-cosmetics.ai/.well-known/jwks.json",
+    "kid": "a2ac-2026-09"
+  },
+  "contact": "mailto:mcp@a2a-cosmetics.ai",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "stateTransitionHistory": false
+  },
+  "securitySchemes": {
+    "credential": {
+      "type": "http",
+      "scheme": "bearer",
+      "description": "client-credentials Bearer from https://a2a-registry.ai (register at /oauth/register); reads need no authentication; none returns DENY_UNLICENSED_AGENT on the transacting tools"
+    },
+    "x402": {
+      "type": "http",
+      "scheme": "x402",
+      "description": "order intents settled in USDC on Base after the gate; receipts signed; a refused intent is not settled and not charged"
+    }
+  },
+  "security": [],
+  "defaultInputModes": [
+    "application/json",
+    "text/plain"
+  ],
+  "defaultOutputModes": [
+    "application/json",
+    "text/markdown"
+  ],
+  "preferredTransport": "JSONRPC",
+  "additionalInterfaces": [
+    {
+      "url": "https://mcp.a2a-cosmetics.ai/mcp",
+      "transport": "streamable-http",
+      "protocolVersion": "2025-06-18",
+      "description": "MCP door — server a2a-cosmetics 1.0.0, 20 tools"
+    }
+  ],
+  "supportedInterfaces": [
+    {
+      "url": "https://a2a-cosmetics.ai/a2a",
+      "protocolBinding": "JSONRPC",
+      "transport": "JSONRPC",
+      "protocolVersion": "0.3.0",
+      "preferred": true,
+      "description": "A2A endpoint — message/send, tasks/get; a DataPart {skill, params} runs the gate chain then the tool; text gets the skill list"
+    },
+    {
+      "url": "https://mcp.a2a-cosmetics.ai/mcp",
+      "protocolBinding": "HTTP+JSON",
+      "transport": "streamable-http",
+      "protocolVersion": "2025-06-18",
+      "description": "MCP door — server a2a-cosmetics 1.0.0, 20 tools"
+    },
+    {
+      "url": "https://a2a-cosmetics.ai/",
+      "protocolBinding": "HTTP+JSON",
+      "transport": "HTTP+JSON",
+      "protocolVersion": "1.0",
+      "description": "the page, its Markdown twin and the kit"
+    }
+  ],
+  "skills": [
+    {
+      "id": "cosmetics.resolve_jurisdiction",
+      "name": "resolve jurisdiction",
+      "description": "Where is this going? Returns the market and rule set.",
+      "tags": [
+        "gate",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.resolve_actor",
+      "name": "resolve actor",
+      "description": "Who is asking? Brand, manufacturer, retailer or distributor.",
+      "tags": [
+        "gate",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.gate_transaction",
+      "name": "gate transaction",
+      "description": "Allow or deny, with the reason and the rule.",
+      "tags": [
+        "gate",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.get_ingredient_record",
+      "name": "get ingredient record",
+      "description": "One ingredient, and its status in every market.",
+      "tags": [
+        "regulatory-truth",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.get_market_status",
+      "name": "get market status",
+      "description": "Is this product type a cosmetic here?",
+      "tags": [
+        "regulatory-truth",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.get_notification_requirements",
+      "name": "get notification requirements",
+      "description": "What must be filed before sale.",
+      "tags": [
+        "regulatory-truth",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.get_label_and_claims",
+      "name": "get label and claims",
+      "description": "What the label must say, and which claims are allowed.",
+      "tags": [
+        "regulatory-truth",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.get_enforcement_watch",
+      "name": "get enforcement watch",
+      "description": "Recalls, bans and safety alerts, dated.",
+      "tags": [
+        "regulatory-truth",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.search_cleared_items",
+      "name": "search cleared items",
+      "description": "Find products cleared for this market.",
+      "tags": [
+        "catalogue",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.get_item",
+      "name": "get item",
+      "description": "One product by GTIN, fully resolved.",
+      "tags": [
+        "catalogue",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.compare_items",
+      "name": "compare items",
+      "description": "Compare products, variants and shades.",
+      "tags": [
+        "catalogue",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.find_verified_supplier",
+      "name": "find verified supplier",
+      "description": "Verified makers and brands for this product.",
+      "tags": [
+        "supply",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.get_availability",
+      "name": "get availability",
+      "description": "In stock, and where.",
+      "tags": [
+        "supply",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.get_price",
+      "name": "get price",
+      "description": "The price for this buyer.",
+      "tags": [
+        "supply",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.get_product_documents",
+      "name": "get product documents",
+      "description": "Safety report, certificate of analysis, data sheet.",
+      "tags": [
+        "documents",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.verify_gtin",
+      "name": "verify gtin",
+      "description": "Is this GTIN real, and whose is it?",
+      "tags": [
+        "documents",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.create_order_intent",
+      "name": "create order intent",
+      "description": "Open an order between two agents.",
+      "tags": [
+        "commerce",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.a2a_handoff",
+      "name": "a2a handoff",
+      "description": "Hand the buyer to the right agent.",
+      "tags": [
+        "commerce",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.get_safety_label",
+      "name": "get safety label",
+      "description": "Warnings and age limits.",
+      "tags": [
+        "operations",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.log_audit",
+      "name": "log audit",
+      "description": "Write a line to the audit record.",
+      "tags": [
+        "operations",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "cosmetics.list_agents",
+      "name": "list agents",
+      "description": "The agents of the hub counted from the agent table at request time: the hub trio, nineteen market agents in their own Azure regions, four actor entries, handoff, watch, audit, six lane views and the tenant seat — hostname, role, market preset, region, card and /a2a URL.",
+      "tags": [
+        "concierge",
+        "cosmetics"
+      ],
+      "inputModes": [
+        "application/json",
+        "text/plain"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    }
+  ],
+  "refusals": [
+    {
+      "reason_code": "DENY_NOT_A_COSMETIC_HERE",
+      "description": "the product type is not permitted as a cosmetic in the market"
+    },
+    {
+      "reason_code": "DENY_INGREDIENT_BANNED",
+      "description": "an ingredient on the record is prohibited in the market"
+    },
+    {
+      "reason_code": "DENY_INGREDIENT_LIMIT",
+      "description": "a restricted ingredient without the limit shown met"
+    },
+    {
+      "reason_code": "DENY_CLAIM",
+      "description": "a claim that takes the product out of the cosmetic class"
+    },
+    {
+      "reason_code": "DENY_MARKET",
+      "description": "not one of the 18 markets"
+    },
+    {
+      "reason_code": "DENY_ACTOR_CLASS",
+      "description": "the consumer, or a read-only auditor, on a transacting tool"
+    },
+    {
+      "reason_code": "DENY_UNLICENSED_AGENT",
+      "description": "an agent without a credential from the issuer"
+    },
+    {
+      "reason_code": "DENY_NO_GTIN",
+      "description": "no valid GTIN on the record"
+    },
+    {
+      "reason_code": "DENY_NOT_VERIFIED",
+      "description": "no validated or verified record for the transaction"
+    }
+  ],
+  "markets": [
+    "US",
+    "MX",
+    "CA",
+    "BR",
+    "GB",
+    "FR",
+    "DE",
+    "NL",
+    "IT",
+    "ES",
+    "PL",
+    "CH",
+    "AE",
+    "IN",
+    "SG",
+    "JP",
+    "KR",
+    "AU"
+  ],
+  "rule_sets": [
+    "US",
+    "MX",
+    "CA",
+    "BR",
+    "GB",
+    "EU",
+    "CH",
+    "AE",
+    "IN",
+    "SG",
+    "JP",
+    "KR",
+    "AU"
+  ],
+  "registry": {
+    "namespace": "io.github.greencore-solutions",
+    "server": "a2a-cosmetics"
+  },
+  "family": {
+    "hub": "https://a2a-cosmetics.ai",
+    "issuer": "https://a2a-registry.ai",
+    "x402": "https://a2a-x402.ai",
+    "pay": "https://a2a-pay.ai",
+    "rails": [
+      "https://agent-x402.ai",
+      "https://agent-mpp.ai",
+      "https://agent-ucp.ai",
+      "https://agent-acp.ai"
+    ]
+  },
+  "payments": {
+    "x402": "live",
+    "mpp": "built, dark",
+    "ucp": "built, dark",
+    "acp": "built, dark",
+    "ap2": "declared on this card; joining is the CEO's ruling"
+  },
+  "agents": {
+    "list": "https://a2a-cosmetics.ai/agents.json",
+    "skill": "cosmetics.list_agents",
+    "counted": "from the agent table at request time"
+  },
+  "asOf": "2026-09-20",
+  "signatures": [
+    {
+      "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImEyYWMtMjAyNi0wOSJ9",
+      "signature": "KOi5AG-pEMaUgwrs2eWvXphDQ3vn9Mu6RCi4lUUWtjajiyOsclGHToqlHwwX4XckUUALNudDmHJNjbIF74Ov2w"
+    }
+  ]
+}

@@ -1,0 +1,219 @@
+{
+ "protocolVersion": "0.3.0",
+ "kind": "agent-card",
+ "name": "A2A Cosmetics — Auditor Port",
+ "description": "Agent-to-Agent (A2A) + Model Context Protocol (MCP) hub for cosmetics.",
+ "brief": "AI agents for brands, manufacturers, retailers and distributors. Business to business.",
+ "notice": "Artificial intelligence makes mistakes. A2A Cosmetics is an information source, not a recommendation. Rules differ by jurisdiction — refer to the regulator in your jurisdiction for the information that applies to you.",
+ "url": "https://audit.a2a-cosmetics.ai/a2a",
+ "preferredTransport": "JSONRPC",
+ "additionalInterfaces": [
+  {
+   "url": "https://mcp.a2a-cosmetics.ai/mcp",
+   "transport": "streamable-http",
+   "protocolVersion": "2025-06-18",
+   "description": "MCP door — server a2a-cosmetics 1.0.0, 20 tools"
+  }
+ ],
+ "supportedInterfaces": [
+  {
+   "url": "https://audit.a2a-cosmetics.ai/a2a",
+   "protocolBinding": "JSONRPC",
+   "transport": "JSONRPC",
+   "protocolVersion": "0.3.0",
+   "preferred": true,
+   "description": "A2A endpoint — message/send, tasks/get; DataPart {skill, params} runs the gate chain then the tool; text gets the skill list"
+  },
+  {
+   "url": "https://mcp.a2a-cosmetics.ai/mcp",
+   "protocolBinding": "HTTP+JSON",
+   "transport": "streamable-http",
+   "protocolVersion": "2025-06-18",
+   "description": "MCP door — server a2a-cosmetics 1.0.0, 20 tools"
+  }
+ ],
+ "version": "1.0.0",
+ "documentationUrl": "https://a2a-cosmetics.ai/docs",
+ "iconUrl": "https://a2a-cosmetics.ai/icon-512.png",
+ "provider": {
+  "organization": "GreenCore Solutions Corp.",
+  "url": "https://gsc-em.com"
+ },
+ "operator": {
+  "name": "GreenCore Solutions Corp.",
+  "url": "https://a2a-cosmetics.ai",
+  "contact": "mailto:mcp@a2a-cosmetics.ai",
+  "keyring": "https://a2a-cosmetics.ai/.well-known/jwks.json",
+  "kid": "a2ac-2026-09"
+ },
+ "capabilities": {
+  "streaming": false,
+  "pushNotifications": false,
+  "stateTransitionHistory": false
+ },
+ "securitySchemes": {
+  "credential": {
+   "type": "http",
+   "scheme": "bearer",
+   "description": "client-credentials Bearer from https://a2a-registry.ai (register at /oauth/register); reads need no authentication; none returns DENY_UNLICENSED_AGENT on the transacting skills"
+  }
+ },
+ "security": [],
+ "defaultInputModes": [
+  "application/json",
+  "text/plain"
+ ],
+ "defaultOutputModes": [
+  "application/json"
+ ],
+ "skills": [
+  {
+   "id": "cosmetics.list_agents",
+   "name": "list agents",
+   "description": "Every live agent from the agent table at request time: hostname, role, tenant, region, card URL, signature kid and registration id.",
+   "tags": [
+    "audit",
+    "read"
+   ],
+   "inputModes": [
+    "application/json",
+    "text/plain"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.get_pack_index",
+   "name": "get pack index",
+   "description": "The public index of review packs: number, sealed date, pack hash, file count.",
+   "tags": [
+    "audit",
+    "read"
+   ],
+   "inputModes": [
+    "application/json",
+    "text/plain"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.get_pack",
+   "name": "get pack",
+   "description": "One review pack: its signed manifest (SHA-256 per file, pack hash) and, with file given, the file's contents. Auditor bearer.",
+   "tags": [
+    "audit",
+    "auditor-bearer"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": [
+    {
+     "credential": []
+    }
+   ]
+  },
+  {
+   "id": "cosmetics.verify_receipt",
+   "name": "verify receipt",
+   "description": "Resolve a settlement receipt by nonce from the payments door and verify its EdDSA signature against the receipt keyring.",
+   "tags": [
+    "audit",
+    "read"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.get_rule_set_versions",
+   "name": "get rule set versions",
+   "description": "Rule sets in force per jurisdiction (read from the door's health at request time) and every version on the record (from the sealed pack's protocol reading).",
+   "tags": [
+    "audit",
+    "read"
+   ],
+   "inputModes": [
+    "application/json",
+    "text/plain"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.get_azure_posture",
+   "name": "get azure posture",
+   "description": "The ENABLED controls of the Azure estate as read from the control plane into the latest sealed pack (azure.json); nothing listed that is not on.",
+   "tags": [
+    "audit",
+    "read"
+   ],
+   "inputModes": [
+    "application/json",
+    "text/plain"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": []
+  },
+  {
+   "id": "cosmetics.get_audit_log",
+   "name": "get audit log",
+   "description": "The audit log: one line per auditor call (client id, skill or tool, outcome) for a UTC day. Auditor bearer.",
+   "tags": [
+    "audit",
+    "auditor-bearer"
+   ],
+   "inputModes": [
+    "application/json"
+   ],
+   "outputModes": [
+    "application/json"
+   ],
+   "security": [
+    {
+     "credential": []
+    }
+   ]
+  }
+ ],
+ "role": "audit",
+ "tenant": "hub",
+ "region": "South Central US",
+ "registry": {
+  "issuer": "https://a2a-registry.ai",
+  "client_id": null
+ },
+ "hub": "https://a2a-cosmetics.ai",
+ "asOf": "2026-09-20T20:19:33Z",
+ "skillsOnly": [
+  "list_agents",
+  "get_pack_index",
+  "get_pack",
+  "verify_receipt",
+  "get_rule_set_versions",
+  "get_azure_posture",
+  "get_audit_log"
+ ],
+ "signatures": [
+  {
+   "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImEyYWMtMjAyNi0wOSJ9",
+   "signature": "qGS8q_IO87tx7Apu9cUpcxoPPjBA7KLwEpafx9ryDkng-EGguwER2bQ-AbLzRXuNbwKTUHmUEbDnwHKkTRspaQ"
+  }
+ ]
+}

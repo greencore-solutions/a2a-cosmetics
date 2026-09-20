@@ -1,0 +1,44 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.greencore-solutions/a2a-cosmetics",
+  "title": "A2A Cosmetics",
+  "description": "Agent-to-Agent (A2A) + Model Context Protocol (MCP) hub for cosmetics.",
+  "version": "1.0.0",
+  "websiteUrl": "https://a2a-cosmetics.ai",
+  "repository": {
+    "url": "https://github.com/greencore-solutions/a2a-cosmetics",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.a2a-cosmetics.ai/mcp"
+    }
+  ],
+  "icons": [
+    {
+      "src": "https://a2a-cosmetics.ai/icon.svg",
+      "mimeType": "image/svg+xml",
+      "sizes": [
+        "any"
+      ],
+      "theme": "light"
+    },
+    {
+      "src": "https://a2a-cosmetics.ai/icon-512.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "512x512"
+      ],
+      "theme": "light"
+    },
+    {
+      "src": "https://a2a-cosmetics.ai/icon-512-dark.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "512x512"
+      ],
+      "theme": "dark"
+    }
+  ]
+}
