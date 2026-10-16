@@ -10,6 +10,8 @@ Notice: Artificial intelligence makes mistakes. A2A Cosmetics is an information 
 
 <!-- door:begin -->streamable-HTTP, stateless, server name `a2a-cosmetics`, door version 1.0.0, 20 tools (read from the wire 2026-09-20)<!-- door:end -->
 
+<!-- gtinfetch:begin -->Product facts on this hub are served live from gtinfetch.ai, the GTIN resolver for AI agents; every answer carries its source page, date read and gtinfetch’s signature. Paid resolves at x402.gtinfetch.ai.<!-- gtinfetch:end -->
+
 - MCP: `https://mcp.a2a-cosmetics.ai/mcp` — any client that speaks streamable-HTTP: `{ "url": "https://mcp.a2a-cosmetics.ai/mcp", "transport": "streamable-http" }`
 - A2A 0.3.0 JSON-RPC: `https://a2a-cosmetics.ai/a2a` (the hub) and `https://<cc>.a2a-cosmetics.ai/a2a` (one market agent per market, answered from its own Azure region)
 - Agent Card: `https://a2a-cosmetics.ai/.well-known/agent-card.json` (ES256, kid `a2ac-2026-09`; keyring `/.well-known/jwks.json`)
